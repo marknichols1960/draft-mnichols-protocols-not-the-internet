@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude"
+     category="info"
+     docName="draft-mnichols-protocols-not-the-internet-00"
+     ipr="trust200902"
+     submissionType="independent"
+     version="3">
+
+  <front>
+    <title abbrev="MN-UTIL-01">Protocol Architects Are Not the Creators of the Internet</title>
+
+    <seriesInfo name="Internet-Draft" value="draft-mnichols-protocols-not-the-internet-00"/>
+
+    <author fullname="Mark Nichols" initials="M." surname="Nichols">
+          <organization>Independent</organization>
+<address>
+                <postal>
+          <country>US</country>
+        </postal>
+<email>mark@marknichols.com</email>
+      </address>
+    </author>
+
+    <date year="2026" month="January"/>
+
+    <abstract>
+      <t>
+        TCP/IP standardized interoperability and end to end transport semantics. The World Wide Web standardized
+        publishing and retrieval. Neither TCP/IP nor the Web specifies, provisions, or enforces the path properties
+        required for utility grade Internet operation at scale.
+      </t>
+      <t>
+        This memo defines terminology to distinguish interoperability standards from utility grade operation and
+        specifies operational requirements for "infrastructure activation": provisioned transport, interconnection
+        strategy, routing policy control, redundancy, locality, continuous monitoring, incident response, and
+        enforceable service accountability. This memo proposes no protocol changes.
+      </t>
+      <t>
+        Figure 1. Three layer model. Protocols enable interoperability. The Web enables publishing. Utility grade
+        Internet behavior requires infrastructure activation.
+      </t>
+    </abstract>
+
+
+    <note title="Thesis">
+      <t>Protocols enable interoperability. The Web enables publishing and retrieval. Internet operation requires infrastructure activation.</t>
+      <t>Protocols are necessary. They are not the Internet.</t>
+    </note>
+
+<note title="Status of This Memo">
+      <t>
+        This memo provides information for the Internet community. It does not specify an Internet standard of any kind.
+        It is an RFC style informational memo published independently and is not an IETF document.
+      </t>
+    </note>
+
+    <note title="Copyright Notice">
+      <t>Copyright (c) 2026 Mark Nichols.</t>
+    </note>
+  </front>
+
+  <middle>
+
+<section anchor="introduction" title="Introduction">
+      <t>
+        Public headlines and institutional profiles frequently use "created the Internet" as shorthand for protocol
+        authorship. Some extend the same shorthand to the Web (HTTP, HTML, URIs). This memo separates:
+      </t>
+      <ul>
+        <li>
+          <t><strong>Interoperability standards</strong>, which define protocol semantics enabling heterogeneous systems and networks to exchange data.</t>
+        </li>
+        <li>
+          <t><strong>Utility grade Internet operation</strong>, which is repeatable, measurable, and enforceable service behavior suitable for commerce and institutional dependence across borders.</t>
+        </li>
+      </ul>
+
+      <section anchor="category-statement" title="Category statement">
+        <t>
+          Designing protocols, or leading development of protocols or the Web software system, is not equivalent to
+          creating utility grade Internet operation. A whole system creation claim requires whole system evidence.
+          Protocol correctness and adoption do not imply utility grade operation.
+        </t>
+        <t>
+          Protocol authorship is often interpreted as whole system authorship in public narratives. This memo does not
+          diminish protocol invention credit. It clarifies a different claim: creation of utility grade, enforceable
+          service behavior.
+        </t>
+        <t>
+          Misattribution is now appearing in educational materials, where simplified creator narratives are presented as
+          literal technical history. For example, a recent school textbook presented a single person "created the
+          Internet" claim as fact.
+        </t>
+      </section>
+
+      <section anchor="scope" title="Scope">
+        <t>
+          Protocols and the Web define semantics. The Internet is the deployed, interconnected, operated system those
+          semantics run on.
+        </t>
+        <t>Protocols are necessary. They are not the Internet.</t>
+      </section>
+    </section>
+
+    <section anchor="conventions" title="Conventions and requirement language">
+      <t>
+        The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL in this
+        memo are to be interpreted as described in RFC 2119 and RFC 8174.
+      </t>
+    </section>
+
+    <section anchor="terminology" title="Terminology">
+      <t><strong>Interoperability:</strong> The ability of heterogeneous systems and networks to exchange data using shared protocol semantics.</t>
+      <t><strong>Internet (internetwork):</strong> A network of networks in which packets can be forwarded between administrative domains.</t>
+      <t><strong>Internet utility (utility grade Internet operation):</strong> A service environment in which end to end outcomes are sufficiently predictable and accountable to support commerce and institutional dependence across borders. Defining attributes include measurability, repeatability, enforceability, and operational accountability.</t>
+      <t><strong>Corridor:</strong> The practical end to end path experienced by a flow, shaped by transport, interconnection, routing policy, and queue treatment.</t>
+      <t><strong>Infrastructure activation:</strong> The work required to turn interoperable networking into a dependable utility, including provisioned transport, interconnection strategy, routing policy control, redundancy, locality, and continuous operations.</t>
+      <t><strong>Activation gap:</strong> The difference between: (a) standards compliant endpoint behavior, and (b) corridor properties required for predictable long lived sessions and secure transactions across borders.</t>
+    </section>
+
+    <section anchor="problem" title="Problem statement: interoperability without utility">
+      <t>
+        In an interoperable internetwork, reachability may exist while utility grade behavior does not. The activation gap
+        exists when endpoints remain standards compliant but corridor properties fall outside the envelope required by
+        applications and transactions.
+      </t>
+
+      <section anchor="failure-modes" title="Common failure modes">
+        <t>The following observable conditions can occur while protocols remain correct:</t>
+        <ul>
+          <li><t>high RTT variance and multi second spikes</t></li>
+          <li><t>loss and jitter that collapse long lived sessions</t></li>
+          <li><t>congested interconnects and chokepoints</t></li>
+          <li><t>policy driven queue treatment and class of service degradation</t></li>
+          <li><t>middlebox or application time budgets expiring before recovery converges</t></li>
+          <li><t>unstable routing policy interactions under load or failure</t></li>
+        </ul>
+        <t>These failures are utility failures, not protocol definition failures.</t>
+      </section>
+    </section>
+
+    <section anchor="tcpip" title="What TCP/IP and routing do, and do not do">
+      <section anchor="tcp" title="TCP transport semantics">
+        <t>
+          TCP provides end to end transport semantics between endpoints, including reliable delivery, ordering, flow
+          control, congestion response, and session recovery state.
+        </t>
+        <t>TCP does not and cannot guarantee corridor viability across independent networks. Specifically, TCP:</t>
+        <ul>
+          <li><t>does not select paths and does not control interdomain routing policy</t></li>
+          <li><t>does not provision capacity or ensure headroom</t></li>
+          <li><t>does not require redundancy or diverse corridors to exist</t></li>
+          <li><t>does not enforce priority, scheduling, or QoS across domains</t></li>
+          <li><t>cannot prevent application or middlebox timeouts</t></li>
+          <li><t>does not provide network operations alarms by itself</t></li>
+        </ul>
+      </section>
+
+      <section anchor="ip-bgp" title="IP and interdomain routing">
+        <t>IP provides addressing and forwarding semantics and a best effort abstraction for internetworking.</t>
+        <t>
+          IP and interdomain routing protocols can exchange reachability and can support failover only when alternate
+          topology exists and policy permits its use. Reachability is not equivalent to utility. Interconnect capacity
+          and routing policy frequently dominate user outcomes.
+        </t>
+      </section>
+    </section>
+
+    <section anchor="web" title="What the Web does, and does not do">
+      <t>
+        The Web defines a publishing and retrieval system: naming (URIs), retrieval (HTTP request and response), and
+        documents with links (HTML) implemented in clients and servers.
+      </t>
+      <t>The Web does not create corridor viability or utility grade delivery. It:</t>
+      <ul>
+        <li><t>does not create transport capacity or corridor headroom</t></li>
+        <li><t>does not control interconnection capacity, routing policy, or queue treatment</t></li>
+        <li><t>does not ensure that secure sessions complete at global distance</t></li>
+        <li><t>does not provide operational accountability for performance</t></li>
+      </ul>
+      <t>
+        The Web can make "content exists" true. It cannot make "content arrives predictably at distance" true without an
+        engineered corridor underneath.
+      </t>
+    </section>
+
+    <section anchor="requirements" title="Requirements for utility grade Internet operation">
+      <t>
+        A deployment that claims utility grade Internet operation across borders MUST satisfy the requirements in this
+        section for the scope of its claimed service.
+      </t>
+
+      <section anchor="transport-provisioning" title="Transport provisioning">
+        <t>
+          The operator MUST provision transport with sufficient headroom to keep RTT variance, loss, and jitter within
+          bounds required by intended sessions and transactions.
+        </t>
+        <t>The operator SHOULD provision diverse corridors across meaningful failure domains (facility, carrier, geography).</t>
+      </section>
+
+      <section anchor="interconnection" title="Interconnection capacity and strategy">
+        <t>
+          The operator MUST ensure POP level interconnection capacity consistent with intended service outcomes,
+          including port capacity, cross connects, exchange strategy, and congestion avoidance at handoffs.
+        </t>
+        <t>The operator MUST treat persistent interconnect congestion as a service failure requiring remediation.</t>
+      </section>
+
+      <section anchor="routing-policy" title="Routing policy control">
+        <t>
+          The operator MUST implement routing policy control using operator controlled equipment and AS level intent at
+          backbone facing handoffs.
+        </t>
+        <t>The operator MUST validate failover behavior under realistic failure conditions and policy constraints.</t>
+      </section>
+
+      <section anchor="redundancy" title="Redundancy and disaster recovery">
+        <t>
+          The operator MUST implement redundancy across meaningful failure domains and MUST demonstrate that redundancy
+          is usable under policy and operational constraints.
+        </t>
+        <t>The operator SHOULD conduct regular failover and restoration drills.</t>
+      </section>
+
+      <section anchor="locality" title="Locality">
+        <t>
+          The operator SHOULD implement locality via distributed hosting, caching, replication, or placement to reduce
+          dependency on long haul corridors for common retrieval paths and transaction flows.
+        </t>
+      </section>
+
+      <section anchor="continuous-ops" title="Continuous operations">
+        <t>
+          The operator MUST implement continuous operations sufficient to detect, isolate, and remediate corridor
+          failures and performance collapse, including monitoring, alerting, escalation, incident response, and change
+          control.
+        </t>
+      </section>
+
+      <section anchor="accountability" title="Accountability and enforceability">
+        <t>
+          The operator MUST define measurable obligations appropriate to the claimed service, including targets,
+          reporting, accountability, and enforceable commitments such as SLAs and remedies.
+        </t>
+      </section>
+    </section>
+
+    <section anchor="attribution" title="Attribution clarification">
+      <t>
+        It is technically accurate to credit protocol architects and standards bodies for interoperability. It is not
+        technically accurate to credit interoperability standards alone for the emergence of a commercial utility.
+      </t>
+      <t>
+        The Internet utility is an operational outcome produced by infrastructure activation and operations discipline at
+        scale. Protocols are necessary for interoperability. They are not sufficient for utility grade behavior.
+      </t>
+    </section>
+
+    <section anchor="security" title="Security considerations">
+      <t>
+        This memo proposes no protocol changes. Predictable completion of secure sessions depends on corridor viability
+        and on operational practices including monitoring, incident response, and accountable interconnection. Corridor
+        instability and policy driven impairment SHOULD be treated as availability and security risks, not merely
+        performance issues.
+      </t>
+    </section>
+
+    <section anchor="iana" title="IANA considerations">
+      <t>None.</t>
+    </section>
+
+    <section anchor="references" title="References">
+      <section anchor="normative" title="Normative References">
+        <t>RFC 2119. Key words for use in RFCs to indicate requirement levels.</t>
+        <t>RFC 8174. Ambiguity of uppercase vs lowercase in RFC 2119 key words.</t>
+      </section>
+      <section anchor="informative" title="Informative References">
+        <t>RFC 1122. Requirements for Internet Hosts. Communication Layers.</t>
+        <t>RFC 9293. Transmission Control Protocol (TCP).</t>
+        <t>RFC 4271. Border Gateway Protocol 4 (BGP-4).</t>
+      </section>
+    </section>
+
+  </middle>
+
+  <back/>
+
+</rfc>
